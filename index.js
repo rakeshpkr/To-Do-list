@@ -1,28 +1,33 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const taskInput = document.getElementById("taskInput");
-    const addTaskButton = document.getElementById("addTask");
-    const taskList = document.getElementById("taskList");
+document.querySelector('#push').onclick = function(){
+    if(document.querySelector('#newtask input').value.length == 0){
+        alert("Please Enter a Task")
+    }
+    else{
+        document.querySelector('#tasks').innerHTML += `
+            <div class="task">
+                <span id="taskname">
+                    ${document.querySelector('#newtask input').value}
+                </span>
+                <button class="delete">
+                    <i class="far fa-trash-alt"></i>
+                </button>
+            </div>
+        `;
 
-    addTaskButton.addEventListener("click", function () {
-        const taskText = taskInput.value.trim();
-
-        if (taskText !== "") {
-            const listItem = document.createElement("li");
-            listItem.innerHTML = `<span>${taskText}</span> <span class="delete">X</span>`;
-            taskList.appendChild(listItem);
-            taskInput.value = "";
-
-            // Add event listener to the delete button
-            const deleteButton = listItem.querySelector(".delete");
-            deleteButton.addEventListener("click", function () {
-                listItem.remove();
-            });
+        var current_tasks = document.querySelectorAll(".delete");
+        for(var i=0; i<current_tasks.length; i++){
+            current_tasks[i].onclick = function(){
+                this.parentNode.remove();
+            }
         }
-    });
 
-    taskInput.addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            addTaskButton.click();
+        var tasks = document.querySelectorAll(".task");
+        for(var i=0; i<tasks.length; i++){
+            tasks[i].onclick = function(){
+                this.classList.toggle('completed');
+            }
         }
-    });
-});
+
+        document.querySelector("#newtask input").value = "";
+    }
+}
